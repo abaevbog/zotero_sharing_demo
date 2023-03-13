@@ -10,3 +10,5 @@ web services.
 
 This is currently deployed on a sample API gateway project. 
 POST endpoint url is https://gjc8c0bh1d.execute-api.us-east-1.amazonaws.com/dev/new. Feel free to try it out.
+
+Here is a sample of a sharing url thi endpoint returns: http://zotero-sharing-demo-123456789.s3-website-us-east-1.amazonaws.com?key=e2fd95f2129ca472a15041431916d1792b3432dcd71bfc1ec770c22a3da04471
