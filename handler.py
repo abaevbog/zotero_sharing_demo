@@ -35,10 +35,10 @@ Requires collection_items passed in request body
 '''
 def create(event,context):
     collection_items = json.loads(event['body']).get('collection_items')
-    if collection_items is None:
+    if type(collection_items) is not list:
         return {
             'statusCode' : 400,
-            'body' : 'collection_items is missing'
+            'body' : 'collection_items must be an array'
         }
     hashed_key = hashlib.sha256(json.dumps(collection_items).encode()).hexdigest()
     check_if_exists = table.get_item( Key={'key':  hashed_key })
