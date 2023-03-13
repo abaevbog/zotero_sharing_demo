@@ -1,0 +1,51 @@
+service: zotero-sharing
+frameworkVersion: '2 || 3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource:
+            - Fn::GetAtt: [ Table, Arn ]
+  environment:
+    TABLE:  zotero_sharing
+    ROOT_URL: http://zotero-sharing-demo-123456789.s3-website-us-east-1.amazonaws.com
+
+functions:
+  get:
+    handler: handler.get
+    events:
+      - http:
+          path: /{key}
+          method: get
+          cors: true
+          
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: /new
+          method: post
+
+resources:
+  Resources:
+    Table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: zotero_sharing
